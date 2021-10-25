@@ -21,6 +21,8 @@ const PageContainer = ({ }) => {
         checkIfWalletIsConnected();
     }, [currentAccount])
 
+    
+
     const { ethereum } = window;
 
     const checkIfWalletIsConnected = async () => {
@@ -153,7 +155,7 @@ const PageContainer = ({ }) => {
                 </button>
             )}
         <InfoContainer />
-        <ConnectionContainer provider={provider} contractABI={contractABI} contractAddress={contractAddress} userBalance={userBalance} allStakes={allStakes} currentAccount={currentAccount} userAvailableBalance={userAvailableBalance}/>
+        <ConnectionContainer getAllBalances={getAllBalances} provider={provider} contractABI={contractABI} contractAddress={contractAddress} userBalance={userBalance} allStakes={allStakes} currentAccount={currentAccount} userAvailableBalance={userAvailableBalance}/>
 
         </Wrapper>
         <h3>Block Number: {blockNumber}</h3>

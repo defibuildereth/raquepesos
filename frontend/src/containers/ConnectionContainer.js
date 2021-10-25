@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 
 
-const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvailableBalance, allStakes, currentAccount, userBalance }) => {
+const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvailableBalance, allStakes, getAllBalances, currentAccount, userBalance }) => {
 
 
 
@@ -55,6 +55,8 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
                 console.log("Mined --", stakeTxn.hash);
                 setPendingTx(null);
 
+                getAllBalances();
+
             } else {
                 console.log("Ethereum object doesn't exist!");
             }
@@ -79,6 +81,8 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
                 await stakeTxn.wait();
                 console.log("Mined --", stakeTxn.hash);
                 setPendingTx(null);
+
+                getAllBalances();
 
             } else {
                 console.log("Ethereum object doesn't exist!");
