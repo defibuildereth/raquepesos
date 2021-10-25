@@ -10,9 +10,6 @@ import styled from "styled-components";
 
 const PageContainer = ({ }) => {
 
-    const [currentAccount, setCurrentAccount] = useState("");
-
-
     const { ethereum } = window;
 
 
@@ -40,39 +37,16 @@ const PageContainer = ({ }) => {
     background: papayawhip;
     `;  
 
-    const connectWallet = async () => {
-        try {
-            const { ethereum } = window;
-
-            if (!ethereum) {
-                alert("Get MetaMask!");
-                return;
-            }
-
-            const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-
-            console.log("Connected", accounts[0]);
-            setCurrentAccount(accounts[0]);
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     return (<>
         <Wrapper>
         <Title>
         Raquepesos
-
-        </Title>
-        {!currentAccount && (
-                <button className="connectButton" onClick={connectWallet}>
-                    Connect Wallet
-                </button>
-            )}
-        <ConnectionContainer contractAddress={contractAddress} contractABI={contractABI} provider={provider} />
-        <InfoContainer />
         <h3>Block Number: {blockNumber}</h3>
 
+        </Title>
+        <ConnectionContainer contractAddress={contractAddress} contractABI={contractABI} provider={provider} />
+        <InfoContainer />
         </Wrapper>
 
     </>

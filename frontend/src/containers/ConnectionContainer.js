@@ -14,11 +14,9 @@ const ConnectionContainer = ({ contractABI, contractAddress, provider }) => {
     const [userInput, setUserInput] = useState("");
     const [userInput2, setUserInput2] = useState("");
 
+    // const [pendingTx, setPendingTx] = useState("");
+
     const [currentAccount, setCurrentAccount] = useState("");
-
-
-    const [pendingTx, setPendingTx] = useState(false);
-
     const [allStakes, setAllStakes] = useState([]);
     const [userBalance, setUserBalance] = useState(0);
     const [userAvailableBalance, setUserAvailableBalance] = useState(0);
@@ -38,10 +36,10 @@ const ConnectionContainer = ({ contractABI, contractAddress, provider }) => {
                 border-radius: 12px
                 `
 
-    provider.on("pending", (tx) => {
-        console.log(tx);
-        setPendingTx(true);
-    });
+    // provider.on("pending", (tx) => {
+    //     console.log(tx);
+    //     setPendingTx(tx);
+    // });
 
     const getAllBalances = async () => {
         try {
@@ -179,10 +177,6 @@ const ConnectionContainer = ({ contractABI, contractAddress, provider }) => {
         }
     }
 
-    function financial(x) {
-        return Number.parseFloat(x).toFixed(2);
-    }
-
     // daiContract.on("Transfer", (from, to, amount, event) => {
     //     console.log(`${ from } sent ${ formatEther(amount) } to ${ to}`);
 
@@ -190,8 +184,14 @@ const ConnectionContainer = ({ contractABI, contractAddress, provider }) => {
 
     return (<>
 
+
+
+
+
+        {/* <p>The pending tx is: {pendingTx}</p> */}
+
         <ConnectionContainer>
-            <p>Available to stake: {financial(userAvailableBalance)}</p>
+            <p>Available to stake: {userAvailableBalance}</p>
             <form>
                 <label>Amount:
                     <input type='number' value={userInput} onChange={handleUserInput}></input></label>
@@ -201,11 +201,11 @@ const ConnectionContainer = ({ contractABI, contractAddress, provider }) => {
                 Stake
             </button>
 
-            <p>Currently Staked: {financial(userBalance)}</p>
+            <p>Currently Staked: {userBalance}</p>
 
-            <p>Total staked - {financial(allStakes)}</p>
+            <p>Total staked - {allStakes}</p>
 
-            <p>Your share: {financial(userBalance / allStakes * 100)}%</p>
+            <p>Your share: {userBalance / allStakes * 100}%</p>
 
             {userBalance && (
                 <>
