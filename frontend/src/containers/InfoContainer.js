@@ -1,5 +1,5 @@
 import React from 'react';
-import FarmContainer from './FarmContainer';
+// import FarmContainer from './FarmContainer';
 
 const InfoContainer = ({ }) => {
 
@@ -8,7 +8,7 @@ const InfoContainer = ({ }) => {
     return (<>
         <h2> I am the Info Container</h2>
         <p>Here is some information about what is on this page.</p>
-        <FarmContainer/>
+        {/* <FarmContainer/> */}
     </>
     )
 }
