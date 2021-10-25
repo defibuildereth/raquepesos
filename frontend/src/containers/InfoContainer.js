@@ -6,8 +6,8 @@ const InfoContainer = ({ }) => {
 
 
     return (<>
-        <h2> I am the Info Container</h2>
-        <p>Here is some information about what is on this page.</p>
+        <h2>Welcome to Raquepesos.money</h2>
+        <p>The coins here are all for fun - buy some raquepesos on uniswap and stake them here to watch them grow!</p>
         {/* <FarmContainer/> */}
     </>
     )

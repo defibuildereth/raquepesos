@@ -4,14 +4,14 @@ import styled from "styled-components";
 
 
 
-const ConnectionContainer = ({provider, contractAddress, contractABI, userAvailableBalance, allStakes, currentAccount, userBalance}) => {
+const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvailableBalance, allStakes, currentAccount, userBalance }) => {
 
 
 
     const [userInput, setUserInput] = useState("");
     const [userInput2, setUserInput2] = useState("");
 
-    // const [pendingTx, setPendingTx] = useState("");
+    const [pendingTx, setPendingTx] = useState("");
 
     const handleUserInput = (event) => {
         setUserInput(event.target.value)
@@ -28,10 +28,14 @@ const ConnectionContainer = ({provider, contractAddress, contractABI, userAvaila
                 border-radius: 12px
                 `
 
-    // provider.on("pending", (tx) => {
-    //     console.log(tx);
-    //     setPendingTx(tx);
-    // });
+    provider.on("pending", (tx) => {
+        console.log(tx);
+        setPendingTx(tx);
+    });
+
+    function financial(x) {
+        return Number.parseFloat(x).toFixed(2);
+    }
 
 
     const withdraw = async (userInput2) => {
@@ -87,14 +91,12 @@ const ConnectionContainer = ({provider, contractAddress, contractABI, userAvaila
 
     return (<>
 
-
-
-
+    <section>
 
         {/* <p>The pending tx is: {pendingTx}</p> */}
 
-        <ConnectionContainer>
-            <p>Available to stake: {userAvailableBalance}</p>
+        {/* <ConnectionContainer> */}
+            <p>Available to stake: {financial(userAvailableBalance)}</p>
             <form>
                 <label>Amount:
                     <input type='number' value={userInput} onChange={handleUserInput}></input></label>
@@ -104,15 +106,14 @@ const ConnectionContainer = ({provider, contractAddress, contractABI, userAvaila
                 Stake
             </button>
 
-            <p>Currently Staked: {userBalance}</p>
+            <p>Currently Staked: {financial(userBalance)}</p>
 
-            <p>Total staked - {allStakes}</p>
+            <p>Total staked - {financial(allStakes)}</p>
 
-            <p>Your share: {userBalance / allStakes * 100}%</p>
+            <p>Your share: {financial(userBalance / allStakes * 100)}%</p>
 
             {userBalance && (
                 <>
-
                     <form>
                         <label>Amount:
                             <input type='number' value={userInput2} onChange={handleUserInput2}></input></label>
@@ -120,14 +121,11 @@ const ConnectionContainer = ({provider, contractAddress, contractABI, userAvaila
                     <button className="withdrawButton" onClick={() => withdraw(userInput2)}>
                         Withdraw
                     </button>
-
-
                 </>
             )}
+        {/* </ConnectionContainer> */}
 
-            
-
-        </ConnectionContainer>
+        </section>
     </>
     )
 }

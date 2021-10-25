@@ -19,7 +19,7 @@ const PageContainer = ({ }) => {
 
     useEffect(() => {
         checkIfWalletIsConnected();
-    }, [])
+    }, [currentAccount])
 
     const { ethereum } = window;
 
@@ -69,10 +69,10 @@ const PageContainer = ({ }) => {
     const provider = new ethers.providers.Web3Provider(ethereum);
 
 
-    // provider.on("block", (blockNumber) => {
-    //     setBlockNumber(blockNumber);
-    //     // console.log(blockNumber);
-    // })
+    provider.on("block", (blockNumber) => {
+        setBlockNumber(blockNumber);
+        // console.log(blockNumber);
+    })
 
     const getAllBalances = async () => {
         try {
@@ -142,7 +142,7 @@ const PageContainer = ({ }) => {
         <Wrapper>
         <Title>
         Raquepesos
-        {/* <h3>Block Number: {blockNumber}</h3> */}
+        
 
         </Title>
         {!currentAccount && (
@@ -150,9 +150,11 @@ const PageContainer = ({ }) => {
                     Connect Wallet
                 </button>
             )}
-        <ConnectionContainer provider={provider} contractABI={contractABI} contractAddress={contractAddress} userBalance={userBalance} allStakes={allStakes} currentAccount={currentAccount} userAvailableBalance={userAvailableBalance}/>
         <InfoContainer />
+        <ConnectionContainer provider={provider} contractABI={contractABI} contractAddress={contractAddress} userBalance={userBalance} allStakes={allStakes} currentAccount={currentAccount} userAvailableBalance={userAvailableBalance}/>
+
         </Wrapper>
+        <h3>Block Number: {blockNumber}</h3>
 
     </>
     )
