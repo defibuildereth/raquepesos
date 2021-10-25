@@ -11,7 +11,9 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
     const [userInput, setUserInput] = useState("");
     const [userInput2, setUserInput2] = useState("");
 
-    const [pendingTx, setPendingTx] = useState("");
+    
+
+    const [pendingTx, setPendingTx] = useState(null);
 
     const handleUserInput = (event) => {
         setUserInput(event.target.value)
@@ -28,10 +30,7 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
                 border-radius: 12px
                 `
 
-    provider.on("pending", (tx) => {
-        console.log(tx);
-        setPendingTx(tx);
-    });
+
 
     function financial(x) {
         return Number.parseFloat(x).toFixed(2);
@@ -49,9 +48,12 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
 
                 const stakeTxn = await demoPortalContract.removeStake(ethers.utils.parseEther(userInput2));
                 console.log("Mining...", stakeTxn.hash);
+                setPendingTx(stakeTxn.hash);
+
 
                 await stakeTxn.wait();
                 console.log("Mined --", stakeTxn.hash);
+                setPendingTx(null);
 
             } else {
                 console.log("Ethereum object doesn't exist!");
@@ -72,9 +74,11 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
 
                 const stakeTxn = await demoPortalContract.createStake(ethers.utils.parseEther(userInput));
                 console.log("Mining...", stakeTxn.hash);
+                setPendingTx(stakeTxn.hash);
 
                 await stakeTxn.wait();
                 console.log("Mined --", stakeTxn.hash);
+                setPendingTx(null);
 
             } else {
                 console.log("Ethereum object doesn't exist!");
@@ -92,6 +96,10 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
     return (<>
 
     <section>
+
+        {pendingTx && (
+            <h1>There is a pending transaction! {pendingTx}</h1>
+        )}
 
         {/* <p>The pending tx is: {pendingTx}</p> */}
 

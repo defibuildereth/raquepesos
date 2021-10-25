@@ -74,6 +74,8 @@ const PageContainer = ({ }) => {
         // console.log(blockNumber);
     })
 
+    
+
     const getAllBalances = async () => {
         try {
             const { ethereum } = window;
