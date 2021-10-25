@@ -105,9 +105,12 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
             <h1>There is a pending transaction! {pendingTx}</h1>
         )}
 
-        {/* <p>The pending tx is: {pendingTx}</p> */}
 
-        {/* <ConnectionContainer> */}
+            
+
+            {currentAccount && (
+                <>
+
             <p>Available to stake: {financial(userAvailableBalance)}</p>
             <form>
                 <label>Amount:
@@ -118,14 +121,12 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
                 Stake
             </button>
 
-            <p>Currently Staked: {financial(userBalance)}</p>
+            
 
             <p>Total staked - {financial(allStakes)}</p>
 
-            <p>Your share: {financial(userBalance / allStakes * 100)}%</p>
-
-            {userBalance && (
-                <>
+                <p>Currently Staked: {financial(userBalance)}</p>
+                <p>Your share: {financial(userBalance / allStakes * 100)}%</p>
                     <form>
                         <label>Amount:
                             <input type='number' value={userInput2} onChange={handleUserInput2}></input></label>
@@ -135,8 +136,6 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
                     </button>
                 </>
             )}
-        {/* </ConnectionContainer> */}
-
         </section>
     </>
     )

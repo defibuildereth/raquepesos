@@ -21,7 +21,7 @@ const PageContainer = ({ }) => {
         checkIfWalletIsConnected();
     }, [currentAccount])
 
-    
+
 
     const { ethereum } = window;
 
@@ -76,8 +76,6 @@ const PageContainer = ({ }) => {
         // console.log(blockNumber);
     })
 
-    
-
     const getAllBalances = async () => {
         try {
             const { ethereum } = window;
@@ -89,7 +87,9 @@ const PageContainer = ({ }) => {
                 const accounts = await ethereum.request({ method: 'eth_accounts' });
                 const account = accounts[0];
 
-
+                const stakes = await demoPortalContract.totalStakes();
+                let readable_stakes = ethers.utils.formatEther(stakes);
+                setAllStakes(readable_stakes);
 
                 const balance = await demoPortalContract.stakeOf(account);
                 let readable_balance = ethers.utils.formatEther(balance)
@@ -100,9 +100,6 @@ const PageContainer = ({ }) => {
                 let readable_user_balance = ethers.utils.formatEther(availableBalance)
                 setUserAvailableBalance(readable_user_balance)
 
-                const stakes = await demoPortalContract.totalStakes();
-                let readable_stakes = ethers.utils.formatEther(stakes);
-                setAllStakes(readable_stakes);
 
             } else {
                 console.log("Ethereum object doesn't exist!")
@@ -133,29 +130,29 @@ const PageContainer = ({ }) => {
     const Title = styled.h1`
     text-align: center;
     color: palevioletred;
-    `; 
+    `;
     const Wrapper = styled.section`
     padding: 4em;
     background: papayawhip;
-    `;  
+    `;
 
 
 
 
     return (<>
         <Wrapper>
-        <Title>
-        Raquepesos
-        
+            <Title>
+                Raquepesos
 
-        </Title>
-        {!currentAccount && (
+
+            </Title>
+            {!currentAccount && (
                 <button className="connectButton" onClick={connectWallet}>
                     Connect Wallet
                 </button>
             )}
-        <InfoContainer />
-        <ConnectionContainer getAllBalances={getAllBalances} provider={provider} contractABI={contractABI} contractAddress={contractAddress} userBalance={userBalance} allStakes={allStakes} currentAccount={currentAccount} userAvailableBalance={userAvailableBalance}/>
+            <InfoContainer />
+            <ConnectionContainer getAllBalances={getAllBalances} provider={provider} contractABI={contractABI} contractAddress={contractAddress} userBalance={userBalance} allStakes={allStakes} currentAccount={currentAccount} userAvailableBalance={userAvailableBalance} />
 
         </Wrapper>
         <h3>Block Number: {blockNumber}</h3>
