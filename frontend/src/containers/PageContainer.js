@@ -1,27 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import ConnectionContainer from './ConnectionContainer';
-import InfoContainer from './InfoContainer';
 import abi from "../utils/DemoToken.json";
 import { ethers } from "ethers";
 import styled from "styled-components";
 
 
-
-
 const PageContainer = ({ }) => {
-
 
     const [currentAccount, setCurrentAccount] = useState("");
     const [allStakes, setAllStakes] = useState([]);
     const [userBalance, setUserBalance] = useState(0);
     const [userAvailableBalance, setUserAvailableBalance] = useState(0);
 
-
     useEffect(() => {
         checkIfWalletIsConnected();
     }, [currentAccount])
-
-
 
     const { ethereum } = window;
 
@@ -39,10 +32,8 @@ const PageContainer = ({ }) => {
             }
 
             const accounts = await ethereum.request({ method: 'eth_accounts' });
-
             const account = accounts[0];
 
-            // const provider = new ethers.providers.Web3Provider(ethereum);
             const signer = provider.getSigner();
             const demoPortalContract = new ethers.Contract(contractAddress, contractABI, signer);
 
@@ -50,7 +41,6 @@ const PageContainer = ({ }) => {
                 const account = accounts[0];
                 console.log("Found an authorized account: ", account);
                 setCurrentAccount(account)
-
 
             } else {
                 console.log("No authorized account found")
@@ -63,13 +53,9 @@ const PageContainer = ({ }) => {
     }
 
     const [blockNumber, setBlockNumber] = useState(0);
-
     const contractAddress = "0x5AFbe20328E6c180Db77FdBEA5A36e2Af86F06D0";
-
     const contractABI = abi.abi;
-
     const provider = new ethers.providers.Web3Provider(ethereum);
-
 
     provider.on("block", (blockNumber) => {
         setBlockNumber(blockNumber);
@@ -100,7 +86,6 @@ const PageContainer = ({ }) => {
                 let readable_user_balance = ethers.utils.formatEther(availableBalance)
                 setUserAvailableBalance(readable_user_balance)
 
-
             } else {
                 console.log("Ethereum object doesn't exist!")
             }
@@ -128,33 +113,35 @@ const PageContainer = ({ }) => {
     }
 
     const Title = styled.h1`
+    font-size: 80px;
     text-align: center;
-    color: palevioletred;
+    color: #AC3B61;
     `;
-    const Wrapper = styled.section`
-    padding: 4em;
-    background: papayawhip;
-    `;
-
-
-
+    // const Wrapper = styled.section`
+    // padding: 1em;
+    // background: papayawhip;
+    // `;
 
     return (<>
-        <Wrapper>
             <Title>
-                Raquepesos
-
-
+                RaquePesos
             </Title>
+
+            <h2>Buy RaquePesos on Uniswap</h2>
+
+            <br></br>
+            
+            <div id="container">
             {!currentAccount && (
                 <button className="connectButton" onClick={connectWallet}>
                     Connect Wallet
                 </button>
             )}
-            <InfoContainer />
+            
             <ConnectionContainer getAllBalances={getAllBalances} provider={provider} contractABI={contractABI} contractAddress={contractAddress} userBalance={userBalance} allStakes={allStakes} currentAccount={currentAccount} userAvailableBalance={userAvailableBalance} />
-
-        </Wrapper>
+            </div>
+            
+        
         <h3>Block Number: {blockNumber}</h3>
 
     </>

@@ -6,14 +6,11 @@ import styled from "styled-components";
 
 const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvailableBalance, allStakes, getAllBalances, currentAccount, userBalance }) => {
 
-
-
     const [userInput, setUserInput] = useState("");
     const [userInput2, setUserInput2] = useState("");
 
-    
-
     const [pendingTx, setPendingTx] = useState(null);
+    const [completedTx, setCompletedTx] = useState(null);
 
     const handleUserInput = (event) => {
         setUserInput(event.target.value)
@@ -23,19 +20,9 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
         setUserInput2(event.target.value)
     }
 
-    const ConnectionContainer = styled.section`
-                color: orange;
-                background-color: green;
-                padding: 16px;
-                border-radius: 12px
-                `
-
-
-
     function financial(x) {
         return Number.parseFloat(x).toFixed(2);
     }
-
 
     const withdraw = async (userInput2) => {
         try {
@@ -50,10 +37,10 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
                 console.log("Mining...", stakeTxn.hash);
                 setPendingTx(stakeTxn.hash);
 
-
                 await stakeTxn.wait();
                 console.log("Mined --", stakeTxn.hash);
                 setPendingTx(null);
+                setCompletedTx(stakeTxn.hash);
 
                 getAllBalances();
 
@@ -80,7 +67,10 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
 
                 await stakeTxn.wait();
                 console.log("Mined --", stakeTxn.hash);
+                console.log("no longer mining Tx:", stakeTxn.hash)
+
                 setPendingTx(null);
+                setCompletedTx(stakeTxn.hash);
 
                 getAllBalances();
 
@@ -92,46 +82,60 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
         }
     }
 
-    // daiContract.on("Transfer", (from, to, amount, event) => {
-    //     console.log(`${ from } sent ${ formatEther(amount) } to ${ to}`);
 
+    const TransactionBox = styled.section`
+    padding: 2em;
+    background: #BAB2B5;
+    color: white;
+    border-radius: 20px;
+    width: 600px;
+    margin: auto;
+    `;
 
+    const TransactionConfirmedBox = styled.section`
+    background: #123C69;
+    padding: 2em;
+    color: white;
+    border-radius: 20px;
+    width: 600px;
+    margin: auto;
+    `;
 
     return (<>
+        <section>
 
-    <section>
+            {pendingTx && (
+                <TransactionBox>There is a pending transaction!<a target="_blank" href={`https://rinkeby.etherscan.io/tx/${pendingTx}`}>View Details Here</a></TransactionBox>
+            )}
 
-        {pendingTx && (
-            <h1>There is a pending transaction! {pendingTx}</h1>
-        )}
-
-
-            
+            {completedTx && (
+                <TransactionConfirmedBox>Your transaction has completed! <a target="_blank" href={`https://rinkeby.etherscan.io/tx/${completedTx}`}>View Details Here</a></TransactionConfirmedBox>
+            )}    
 
             {currentAccount && (
                 <>
 
-            <p>Available to stake: {financial(userAvailableBalance)}</p>
-            <form>
-                <label>Amount:
-                    <input type='number' value={userInput} onChange={handleUserInput}></input></label>
-            </form>
+                    <p>Available to stake: {financial(userAvailableBalance)}</p>
+                    <form>
+                        <label>Amount:
+                            <input type='number' value={userInput} onChange={handleUserInput}></input></label>
+                    </form>
+                    <div>
+                    <button className="ui primary button" onClick={() => stake(userInput)}>
+                        Stake
+                    </button>
+                    </div>
 
-            <button className="stakeButton" onClick={() => stake(userInput)}>
-                Stake
-            </button>
+                    <p>Total staked - {financial(allStakes)}</p>
 
-            
-
-            <p>Total staked - {financial(allStakes)}</p>
-
-                <p>Currently Staked: {financial(userBalance)}</p>
-                <p>Your share: {financial(userBalance / allStakes * 100)}%</p>
+                    <p>Currently Staked: {financial(userBalance)}</p>
+                    <br></br>
+                    <p>Your share: {financial(userBalance / allStakes * 100)}%</p>
                     <form>
                         <label>Amount:
                             <input type='number' value={userInput2} onChange={handleUserInput2}></input></label>
                     </form>
-                    <button className="withdrawButton" onClick={() => withdraw(userInput2)}>
+                    <button className="ui secondary button" onClick={() => withdraw(userInput2)}>
                         Withdraw
                     </button>
                 </>
@@ -140,7 +144,5 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
     </>
     )
 }
-
-
 
 export default ConnectionContainer;
