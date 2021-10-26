@@ -9,8 +9,23 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
     const [userInput, setUserInput] = useState("");
     const [userInput2, setUserInput2] = useState("");
 
+    const [timer, setTimer] = useState(false);
+
     const [pendingTx, setPendingTx] = useState(null);
     const [completedTx, setCompletedTx] = useState(null);
+
+    // setTimeout(() => {
+    //     this.setState({
+    //       animationFlag: true
+    //     })
+    //   }, 4000)
+  
+
+    useEffect( () => {
+        setTimeout(() => {
+            setTimer(true)
+        }, 15000)
+    }, [])
 
     const handleUserInput = (event) => {
         setUserInput(event.target.value)
@@ -101,16 +116,25 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
     margin: auto;
     `;
 
+    const renderBox = () => {
+        return (
+        setTimeout((<TransactionBox>There is a pending transaction!<a target="_blank" href={`https://rinkeby.etherscan.io/tx/${pendingTx}`}>View Details Here</a></TransactionBox>), 15000)
+    )
+}
+
     return (<>
         <section>
 
-            {pendingTx && (
-                <TransactionBox>There is a pending transaction!<a target="_blank" href={`https://rinkeby.etherscan.io/tx/${pendingTx}`}>View Details Here</a></TransactionBox>
-            )}
+            {pendingTx && !timer  &&(
+                <TransactionBox>There is a pending transaction!<a target="_blank">View Details Here</a></TransactionBox>)
+            }
+            
+            
+
 
             {completedTx && (
                 <TransactionConfirmedBox>Your transaction has completed! <a target="_blank" href={`https://rinkeby.etherscan.io/tx/${completedTx}`}>View Details Here</a></TransactionConfirmedBox>
-            )}    
+            )}  
 
             {currentAccount && (
                 <>
