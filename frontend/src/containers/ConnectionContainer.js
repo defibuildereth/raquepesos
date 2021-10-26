@@ -24,7 +24,7 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
     useEffect( () => {
         setTimeout(() => {
             setTimer(true)
-        }, 15000)
+        }, 45000)
     }, [])
 
     const handleUserInput = (event) => {
@@ -83,9 +83,11 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
                 await stakeTxn.wait();
                 console.log("Mined --", stakeTxn.hash);
                 console.log("no longer mining Tx:", stakeTxn.hash)
+                setCompletedTx(stakeTxn.hash);
+                console.log(completedTx);
+
 
                 setPendingTx(null);
-                setCompletedTx(stakeTxn.hash);
 
                 getAllBalances();
 
@@ -116,23 +118,18 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
     margin: auto;
     `;
 
-    const renderBox = () => {
-        return (
-        setTimeout((<TransactionBox>There is a pending transaction!<a target="_blank" href={`https://rinkeby.etherscan.io/tx/${pendingTx}`}>View Details Here</a></TransactionBox>), 15000)
-    )
-}
 
     return (<>
         <section>
 
-            {pendingTx && !timer  &&(
-                <TransactionBox>There is a pending transaction!<a target="_blank">View Details Here</a></TransactionBox>)
+            {pendingTx && (
+                <TransactionBox>There is a pending transaction!<a target="_blank"  href={`https://rinkeby.etherscan.io/tx/${pendingTx}`}>View Details Here</a></TransactionBox>)
             }
             
             
 
 
-            {completedTx && (
+            {completedTx && !timer &&(
                 <TransactionConfirmedBox>Your transaction has completed! <a target="_blank" href={`https://rinkeby.etherscan.io/tx/${completedTx}`}>View Details Here</a></TransactionConfirmedBox>
             )}  
 
