@@ -23,9 +23,9 @@ const ConnectionContainer = ({ provider, contractAddress, contractABI, userAvail
 
     useEffect( () => {
         setTimeout(() => {
-            setTimer(true)
-        }, 45000)
-    }, [])
+            setCompletedTx(null)
+        }, 15000)
+    }, [completedTx])
 
     const handleUserInput = (event) => {
         setUserInput(event.target.value)
